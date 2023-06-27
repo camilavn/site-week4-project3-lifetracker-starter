@@ -1,10 +1,8 @@
 process.env.NODE_ENV = 'test';
 process.env.IS_TESTING = 'true';
-process.env.SERVER_PORT = 5000; // Set the desired value for PORT
-process.env.SECRET_KEY = 'test-secret-key'; // Set the desired value for SECRET_KEY
-process.env.BCRYPT_WORK_FACTOR = 13; // Set the desired value for BCRYPT_WORK_FACTOR
-
-// tests.js
+process.env.SERVER_PORT = 5000; 
+process.env.SECRET_KEY = 'fvaeraeaebdbeberbawbw'; 
+process.env.BCRYPT_WORK_FACTOR = 13; 
 
 const assert = require('chai').assert;
 const config = require('./config.js');
@@ -48,7 +46,7 @@ describe('Env Variables', function() {
     it('should return process.env.DATABASE_URL if it exists', function() {
       process.env.DATABASE_URL = 'test-database-url';
       assert.strictEqual(config.getDatabaseUri(), 'test-database-url');
-      delete process.env.DATABASE_URL; // Clean up the environment variable after the test
+      delete process.env.DATABASE_URL; 
     });
 
     it('should use the test database when IS_TESTING is true', function() {
@@ -70,8 +68,9 @@ describe('Env Variables', function() {
         config.getDatabaseUri(),
         'postgresql://test-user:test-password@localhost:5432/test-db'
       );
-
-      delete process.env.DB_HOST; // Clean up the environment variables after the test
+      
+      // Clean up the environment variables after the test
+      delete process.env.DB_HOST; 
       delete process.env.DB_PORT;
       delete process.env.DB_NAME;
       delete process.env.DB_USER;
