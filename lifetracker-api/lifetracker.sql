@@ -3,8 +3,6 @@
 DROP DATABASE IF EXISTS lifetracker;
 CREATE DATABASE lifetracker;
 \connect lifetracker;
--- run lifetracker-schema.sql;
-
 \i lifetracker-schema.sql
 
 \echo 'Delete and recreate nutrition db?'
@@ -14,4 +12,3 @@ CREATE DATABASE lifetracker_test;
 \connect lifetracker_test;
 \i lifetracker-schema.sql;
 
--- \i lifetracker_test-schema.sql

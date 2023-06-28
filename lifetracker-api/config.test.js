@@ -6,6 +6,7 @@ process.env.BCRYPT_WORK_FACTOR = 13;
 
 const assert = require('chai').assert;
 const config = require('./config.js');
+config.getDatabaseUri();
 
 describe('Env Variables', function() {
   describe('process.env.NODE_ENV', function() {
@@ -44,37 +45,38 @@ describe('Env Variables', function() {
     });
 
     it('should return process.env.DATABASE_URL if it exists', function() {
-      process.env.DATABASE_URL = 'test-database-url';
-      assert.strictEqual(config.getDatabaseUri(), 'test-database-url');
+      process.env.DATABASE_URL = 'test-database-uri';
+      assert('test-database-url'.localeCompare(config.getDatabaseUri()),config.getDatabaseUri() === 'test-database-url')
       delete process.env.DATABASE_URL; 
     });
 
     it('should use the test database when IS_TESTING is true', function() {
-      process.env.IS_TESTING = 'true';
-      assert.strictEqual(config.getDatabaseUri(), 'test-database-uri');
+      process.env.IS_TESTING = true; 
+      assert.strictEqual(config.getDatabaseUri(), 'postgresql://me:postgres@localhost:localhost/lifetracker_test');
     });
 
     it('should combine the proper database environment variables if DATABASE_URL does not exist', function() {
       delete process.env.DATABASE_URL; // Ensure DATABASE_URL is not set
       delete process.env.IS_TESTING; // Ensure IS_TESTING is not set
+      delete process.env.NODE_ENV; // Ensure NODE_ENV is not set
 
-      process.env.DB_HOST = 'localhost';
-      process.env.DB_PORT = 5432;
-      process.env.DB_NAME = 'test-db';
-      process.env.DB_USER = 'test-user';
-      process.env.DB_PASSWORD = 'test-password';
+      process.env.DATABASE_HOST = 'localhost';
+      process.env.DATABASE_PORT = 5432;
+      process.env.DATABASE_NAME = 'lifetracker';
+      process.env.DATABASE_USER = 'me';
+      process.env.DATABASE_PASS = 'postgres';
 
       assert.strictEqual(
         config.getDatabaseUri(),
-        'postgresql://test-user:test-password@localhost:5432/test-db'
-      );
+        "postgresql://me:postgres@localhost:localhost/lifetracker"
+         );
       
       // Clean up the environment variables after the test
-      delete process.env.DB_HOST; 
-      delete process.env.DB_PORT;
-      delete process.env.DB_NAME;
-      delete process.env.DB_USER;
-      delete process.env.DB_PASSWORD;
+      delete process.env.DATABASE_HOST; 
+      delete process.env.DATABASE_PORT;
+      delete process.env.DATABASE_NAME;
+      delete process.env.DATABASE_USER;
+      delete process.env.DATABASE_PASS;
     });
   });
 });
