@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const SERVER_PORT = process.env.SERVER_PORT ? Number(process.env.SERVER_PORT) : 5000
-const IS_TESTING = process.env.NODE_ENV === "test" //should be boolean
+const IS_TESTING = process.env.NODE_ENV === "test" 
 const SECRET_KEY = process.env.SECRET_KEY || "secret"
 const BCRYPT_WORK_FACTOR = process.env.BCRYPT_WORK_FACTOR || 13
 
