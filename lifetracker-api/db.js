@@ -1,18 +1,14 @@
-"use strict"
+"use strict";
+const { Pool } = require('pg');
+const { getDatabaseUri } = require('./config');
 
-const { Client } = require("pg")
-const { getDatabaseUri } = require("./config")
-
-const db = new Client({
-    connectionString: getDatabaseUri(),
+const pool = new Pool({
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASS,
+    host: process.env.DATABASE_HOST,
+    database: process.env.DATABASE_NAME,  
+    port: process.env.DATABASE_PORT
 });
 
-db.connect((err) => {
-    if (err) {
-      console.error("connection error", err.stack)
-    } else {
-      console.log("Successfully connected to postgres database!".blue)
-    }
-  })
-  
-  module.exports = db;
+module.exports = pool;
+

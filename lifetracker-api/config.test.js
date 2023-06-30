@@ -51,7 +51,7 @@ describe('Env Variables', function() {
     });
 
     it('should use the test database when IS_TESTING is true', function() {
-      const expectedConnectionString = 'postgresql://me:postgres@localhost:5432/lifetracker_test';
+      const expectedConnectionString = 'postgresql://cnaranjo:postgres@localhost:5432/cnaranjo';
       process.env.IS_TESTING = true;
       expect(config.getDatabaseUri().connectionString).to.equal(expectedConnectionString);
     });
@@ -61,7 +61,7 @@ describe('Env Variables', function() {
       delete process.env.IS_TESTING;
       delete process.env.NODE_ENV;
 
-      const expectedConnectionString = 'postgresql://me:postgres@localhost:5432/lifetracker';
+      const expectedConnectionString = 'postgresql://cnaranjo:postgres@localhost:5432/cnaranjo';
       expect(config.getDatabaseUri().connectionString).to.equal(expectedConnectionString);
     });
   });

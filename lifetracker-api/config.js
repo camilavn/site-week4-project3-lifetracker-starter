@@ -6,18 +6,17 @@ const SECRET_KEY = process.env.SECRET_KEY || 'fvaeraeaebdbeberbawbw';
 const BCRYPT_WORK_FACTOR = process.env.BCRYPT_WORK_FACTOR || 13;
 
 function getDatabaseUri() {
-  const DATABASE_USER = process.env.DATABASE_USER || 'me';
-  const DATABASE_PASS = process.env.DATABASE_PASS ? encodeURI(process.env.DATABASE_PASS) : 'postgres';
-  const DATABASE_HOST = process.env.DATABASE_HOST || 'localhost';
-  const DATABASE_PORT = process.env.DATABASE_PORT || 5432;
-  const DATABASE_TEST_NAME = process.env.DATABASE_TEST_NAME || 'lifetracker_test';
-  const DATABASE_NAME = process.env.DATABASE_NAME || 'lifetracker';
-  const BCRYPT_WORK_FACTOR = process.env.BCRYPT_WORK_FACTOR || 13;
+  const DATABASE_USER = process.env.DATABASE_USER 
+  const DATABASE_PASS = process.env.DATABASE_PASS 
+  const DATABASE_HOST = process.env.DATABASE_HOST
+  const DATABASE_PORT = process.env.DATABASE_PORT 
+  const DATABASE_NAME = process.env.DATABASE_NAME 
+  const BCRYPT_WORK_FACTOR = process.env.BCRYPT_WORK_FACTOR
   const IS_TESTING = process.env.IS_TESTING === 'true';
 
   if (IS_TESTING) {
     return {
-      connectionString: `postgresql://${DATABASE_USER}:${DATABASE_PASS}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_TEST_NAME}`,
+      connectionString: `postgresql://${DATABASE_USER}:${DATABASE_PASS}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}`,
     };
   }
 

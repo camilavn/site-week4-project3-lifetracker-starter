@@ -1,30 +1,35 @@
-const {Client} = require("pg");
-const {getDatabaseUri} = require("./config");
+const { Pool } = require('pg');
+const { getDatabaseUri } = require('../config');
 
-const db = new Client({});
-db.connect();
-
-
-commonBeforeAll(async function () {
-    await db.query("DELETE FROM users");
-    await db.query("DELETE FROM goals");
-    await db.query("DELETE FROM tasks");
-    await db.query("DELETE FROM user_goals");
+const pool = new Pool({
+  connectionString: getDatabaseUri(),
 });
 
-commonBeforeEach(async function () {
-    await db.query("BEGIN");
-}
-);
+pool.connect();
 
-commonAfterEach(async function () {
-    await db.query("ROLLBACK");
-}
-);
+const commonBeforeAll = async function () {
+  await pool.query('DELETE FROM users');
+  await pool.query('DELETE FROM goals');
+  await pool.query('DELETE FROM tasks');
+  await pool.query('DELETE FROM user_goals');
+};
 
-commonAfterAll(async function () {
-    await db.end();
-}
-);
+const commonBeforeEach = async function () {
+  await pool.query('BEGIN');
+};
 
-module.exports = db;
+const commonAfterEach = async function () {
+  await pool.query('ROLLBACK');
+};
+
+const commonAfterAll = async function () {
+  await pool.end();
+};
+
+module.exports = {
+  pool,
+  commonBeforeAll,
+  commonBeforeEach,
+  commonAfterEach,
+  commonAfterAll,
+};

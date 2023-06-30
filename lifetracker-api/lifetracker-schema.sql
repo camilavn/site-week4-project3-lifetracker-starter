@@ -1,6 +1,6 @@
 
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
+    id SERIAL NOT NULL,
     username TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
@@ -9,9 +9,9 @@ CREATE TABLE users (
 );
 
 CREATE TABLE nutrition (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    category TEXT NOT NULL,
+    -- user_id INTEGER NOT NULL,
+    name VARCHAR NOT NULL,
+    category VARCHAR NOT NULL,
     calories INTEGER NOT NULL,
     image_url TEXT NOT NULL,
     user_id INTEGER NOT NULL UNIQUE,
