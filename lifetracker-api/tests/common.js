@@ -1,35 +1,35 @@
-const { Pool } = require('pg');
-const { getDatabaseUri } = require('../config');
+// const { Pool } = require('pg');
+// const { getDatabaseUri } = require('../config');
 
-const pool = new Pool({
-  connectionString: getDatabaseUri(),
-});
+// const pool = new Pool({
+//   connectionString: getDatabaseUri(),
+// });
 
-pool.connect();
+// pool.connect();
 
-const commonBeforeAll = async function () {
-  await pool.query('DELETE FROM users');
-  await pool.query('DELETE FROM goals');
-  await pool.query('DELETE FROM tasks');
-  await pool.query('DELETE FROM user_goals');
-};
+// const commonBeforeAll = async function () {
+//   await pool.query('DELETE FROM users');
+//   await pool.query('DELETE FROM goals');
+//   await pool.query('DELETE FROM tasks');
+//   await pool.query('DELETE FROM user_goals');
+// };
 
-const commonBeforeEach = async function () {
-  await pool.query('BEGIN');
-};
+// const commonBeforeEach = async function () {
+//   await pool.query('BEGIN');
+// };
 
-const commonAfterEach = async function () {
-  await pool.query('ROLLBACK');
-};
+// const commonAfterEach = async function () {
+//   await pool.query('ROLLBACK');
+// };
 
-const commonAfterAll = async function () {
-  await pool.end();
-};
+// const commonAfterAll = async function () {
+//   await pool.end();
+// };
 
-module.exports = {
-  pool,
-  commonBeforeAll,
-  commonBeforeEach,
-  commonAfterEach,
-  commonAfterAll,
-};
+// module.exports = {
+//   pool,
+//   commonBeforeAll,
+//   commonBeforeEach,
+//   commonAfterEach,
+//   commonAfterAll,
+// };

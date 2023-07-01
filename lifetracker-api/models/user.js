@@ -29,7 +29,7 @@ class User {
     }
   }
 
-  static async register(username, password, email) {
+  static async register(username, password, email, firstName, lastName) {
     try {
       const existingUser = await pool.query('SELECT * FROM users WHERE email = $1 OR username = $2', [email, username]);
       if (existingUser.rows.length > 0) {
@@ -40,7 +40,7 @@ class User {
       
       const newUser = await pool.query(
         'INSERT INTO users (username, password, email) VALUES ($1, $2, $3) RETURNING *',
-        [username, hashedPassword, email]
+        [username, hashedPassword, email, firstName, lastName]
       );
   
       return newUser;
