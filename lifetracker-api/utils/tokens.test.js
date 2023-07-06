@@ -3,6 +3,9 @@
 const chai = require('chai');
 const { expect } = chai;
 const chaiSpies = require('chai-spies');
+const jwt = require('jsonwebtoken');
+const { SECRET_KEY } = require('../config');
+
 chai.use(chaiSpies);
 
 const { createToken, verifyToken } = require('./token');
@@ -10,14 +13,17 @@ const { createToken, verifyToken } = require('./token');
 chai.should();
 
 describe('Tokens Utility', function () {
-  const payload = {
+  const user = {
     id: 123,
     username: 'testuser',
+    firstName: 'test',
+    lastName: 'user',
+    email: 'test@gmail.com'
   };
 
   describe('createToken function', function () {
     it('should create a valid JWT token for user payloads', function () {
-      const token = createToken(payload);
+      const token = createToken(user);
       expect(token).to.be.a('string');
       expect(token).to.not.be.empty;
     });
@@ -25,11 +31,17 @@ describe('Tokens Utility', function () {
 
   describe('verifyToken function', function () {
     it('should extract a payload from a valid JWT with the correct secret', function () {
-        const token = createToken(payload);
-        const decoded = verifyToken(token);
-        expect(decoded).to.deep.include({ id: payload.id, username: payload.username });
+      const token = createToken(user);
+      const decoded = verifyToken(token);
+      expect(decoded).to.deep.include({
+        id: user.id,
+        username: user.username,
+        firstname: user.firstName,
+        lastname: user.lastName,
+        emailaddress: user.email
       });
-      
+    });
+
     it('should return null when invalid tokens are parsed', function () {
       const invalidToken = 'invalid-token';
       const decoded = verifyToken(invalidToken);
@@ -37,11 +49,13 @@ describe('Tokens Utility', function () {
     });
 
     it('should call jwt.verify with the correct arguments', function () {
-      const token = createToken(payload);
-      const verifySpy = chai.spy.on(require('jsonwebtoken'), 'verify');
+      const token = createToken(user);
+      const verifySpy = chai.spy.on(jwt, 'verify');
       verifyToken(token);
-      expect(verifySpy).to.have.been.called.with(token, process.env.SECRET_KEY);
-      chai.spy.restore(require('jsonwebtoken'), 'verify');
+      expect(verifySpy).to.have.been.called.with(token, SECRET_KEY);
+      chai.spy.restore(jwt, 'verify');
     });
+    
   });
 });
+

@@ -3,13 +3,29 @@ const spies = require('chai-spies');
 const { UnauthorizedError } = require('../utils/errors');
 const { extractUserFromToken, requireAuthenticatedUser } = require('./security');
 const tokens = require('../utils/token');
+const jwt = require('jsonwebtoken');
+const { SECRET_KEY } = require('../config');
 
 chai.use(spies);
 const expect = chai.expect;
+const sinon = require('sinon');
+
+
+
+const user = {
+  id: 123,
+  username: 'testuser',
+  firstName: 'test',
+  lastName: 'user',
+  email: 'test@gmail.com'
+};
+const mocktoken = jwt.sign(user, SECRET_KEY);
 
 describe('Security Middleware', function () {
   describe('extractUserFromToken', function () {
     let req, res, next;
+
+    
 
     beforeEach(function () {
       req = {
@@ -20,37 +36,23 @@ describe('Security Middleware', function () {
       };
       next = chai.spy();
     });
+    
+    
 
     it('should extract user from valid JWT in Authentication header', function () {
-        const token = 'validToken';
-        req.headers.authorization = `Bearer ${token}`;
-        const verifyTokenStub = chai.spy.on(token, 'verifyToken').returns({ id: 123, username: 'testuser' });
-      
-        extractUserFromToken(req, res, next);
-      
-        expect(res.locals.user).to.deep.equal({ id: 123, username: 'testuser' });
-        expect(verifyTokenStub).to.have.been.called.with(token);
-        expect(next).to.have.been.called();
-      
-        chai.spy.restore(token, 'verifyToken');
-      });
-      
-      
-    // it('should extract user from valid JWT in Authentication header', function () {
-    // const token = 'validToken';
-    // req.headers.authorization = `Bearer ${token}`;
+      req.headers.authorization = `Bearer ${mocktoken}`;
+      //const verifyTokenStub = sinon.stub(tokens, 'verifyToken').returns(user);
 
-    // // Spy on the verifyToken function from the tokens module
-    // const verifyTokenStub = chai.spy.on(token, 'verifyToken').returns({ id: 123, username: 'testuser' });
+      const nextSpy = sinon.spy(user.email);
+      extractUserFromToken(req, res, nextSpy);
 
-    // extractUserFromToken(req, res, next);
+      expect(res.locals.user.email).to.equal(user.email);
+      //expect(verifyTokenStub).to.have.been.calledWith(mocktoken);
+      expect(nextSpy).to.have.been.called;
 
-    // expect(res.locals.user).to.deep.equal({ id: 123, username: 'testuser' });
-    // expect(verifyTokenStub).to.have.been.called.with(token);
-    // expect(next).to.have.been.called();
-
-    // chai.spy.restore(token, 'verifyToken');
-    // });
+      //verifyTokenStub.restore();
+    });
+         
 
     it('should not store user when no valid JWT exists in the Authentication header', function () {
       extractUserFromToken(req, res, next);

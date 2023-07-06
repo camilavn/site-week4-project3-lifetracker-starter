@@ -11,6 +11,7 @@ const { extractUserFromToken } = require('./middleware/security');
 app.use(cors());
 app.use(express.json());
 app.use(morgan('tiny'));
+app.use(express.json())
 
 app.use(extractUserFromToken);
 app.use('/auth', require('./routes/auth'));
