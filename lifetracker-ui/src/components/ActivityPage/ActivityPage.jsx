@@ -8,17 +8,27 @@ const ActivityPage = ({ appState, setAppState }) => {
   const [summaryStats, setSummaryStats] = useState(null);
 
   useEffect(() => {
+    console.log('effect called')
     const fetchSummaryStats = async () => {
       setIsProcessing(true);
       
       try {
         // Perform the API call to fetch summary statistics
-        const response = await axios.get("http://localhost:5000/auth/activity");
-        console.log(response);
-        const data = await response.json();
+        let response
+        let token = localStorage.getItem("token") 
+          ? localStorage.getItem("token")
+          : appState.token
+        if (token) {
+          response = await axios.post("http://localhost:5000/auth/activity", {token});
+        } else {
+          alert('not authorized')
+        }
+        console.log("RESPONSE FROM AP:", response.data);
+  
 
         // Update the state with the fetched summary statistics
-        setSummaryStats(data.nutrition.calories);
+        setSummaryStats(response.data.nutrition.calories);
+        console.log("SUMMARY STATS:", summaryStats);
 
         setIsProcessing(false);
       } catch (error) {
