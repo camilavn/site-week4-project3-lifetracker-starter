@@ -4,3 +4,8 @@
   width: 100%;
   gap: 20px;
 }
+
+.card img{
+  width: 45%;
+  height: 45%;
+}

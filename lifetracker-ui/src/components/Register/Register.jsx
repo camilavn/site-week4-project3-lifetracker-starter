@@ -3,20 +3,15 @@ import { useNavigate, Link } from "react-router-dom"
 import axios from "axios"
 import "./Register.css"
 
-// const locationOptions = [
-//   { key: 1, label: "Local Clinic", value: "local clinic" },
-//   { key: 2, label: "Regional Hospital", value: "regional hospital" },
-//   { key: 3, label: "Care Center", value: "care center" },
-//   { key: 4, label: "Department of Health", value: "department of health" },
-// ]
 
-export default function Signup({ setAppState }) {
+export default function Register({ setAppState }) {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState({})
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
+    username: "",
     email: "",
     password: "",
     passwordConfirm: "",
@@ -67,12 +62,14 @@ export default function Signup({ setAppState }) {
         lastName: form.lastName,
         email: form.email,
         password: form.password,
+        username: form.username
       })
 
       if (res?.data?.user) {
-        setAppState(res.data)
-        setIsLoading(false)
-        navigate("/portal")
+        setAppState(res.data);
+        setIsLoading(false);
+        navigate('/auth/login');
+        alert(`Welcome, ${res.data.user.firstName}! Registration successful.`);
       } else {
         setErrors((e) => ({ ...e, form: "Something went wrong with registration" }))
         setIsLoading(false)
@@ -92,27 +89,6 @@ export default function Signup({ setAppState }) {
 
         {errors.form && <span className="error">{errors.form}</span>}
         <br />
-
-        {/* <div className="form">
-          <div className="split-inputs">
-            <div className="input-field">
-              <label htmlFor="name">Select a date</label>
-              <input type="date" name="date" value={form.date} onChange={handleOnInputChange} />
-              {errors.date && <span className="error">{errors.date}</span>}
-            </div> */}
-
-            {/* <div className="input-field">
-              <label htmlFor="name">Select a location</label>
-              <select name="location" onChange={(event) => setForm((f) => ({ ...f, location: event.target.value }))}>
-                {locationOptions.map((location) => (
-                  <option key={location.key} value={location.label}>
-                    {location.label}
-                  </option>
-                ))}
-              </select>
-              {errors.location && <span className="error">{errors.location}</span>}
-            </div> */}
-          {/* </div> */}
 
           <br />
 
@@ -200,6 +176,5 @@ export default function Signup({ setAppState }) {
           </p>
         </div>
       </div>
-    // </div>
   )
 }
