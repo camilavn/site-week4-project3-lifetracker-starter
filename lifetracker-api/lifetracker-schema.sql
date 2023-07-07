@@ -11,11 +11,11 @@ CREATE TABLE users (
 );
 
 CREATE TABLE nutrition (
-    -- user_id INTEGER NOT NULL,
+    id SERIAL NOT NULL,
     name VARCHAR NOT NULL,
     category VARCHAR NOT NULL,
     calories INTEGER NOT NULL,
     image_url TEXT NOT NULL,
-    user_id INTEGER NOT NULL UNIQUE,
+    user_id INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
