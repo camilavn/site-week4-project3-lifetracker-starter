@@ -47,8 +47,6 @@ class User {
         [username, hashedPassword, email, firstName, lastName]
       );
       
-      //const token = jwt.sign( newUser.rows[0], SECRET_KEY);
-      //console.log(newUser.rows[0])
       return newUser.rows[0];
     } catch (error) {
       console.error(error);
@@ -58,13 +56,13 @@ class User {
 
   static async fetchUserByEmail(email) {
     try {
-      const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+      const fetched = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
-      if (rows.length === 0) {
+      if (fetched.rows.length === 0) {
         throw new BadRequestError('User not found');
       }
 
-      return rows[0];
+      return fetched.rows[0];
     } catch (error) {
       console.error(error);
       throw new BadRequestError('Failed to fetch user');
@@ -73,9 +71,9 @@ class User {
 
   static async deleteUser(email) {
     try {
-      const { rowCount } = await pool.query('DELETE FROM users WHERE email = $1', [email]);
+      const toDelete = await pool.query('DELETE FROM users WHERE email = $1', [email]);
 
-      if (rowCount === 0) {
+      if (toDelete.rowCount === 0) {
         throw new BadRequestError('User not found');
       }
     } catch (error) {

@@ -15,18 +15,12 @@ app.use(express.json())
 
 app.use(extractUserFromToken);
 app.use('/auth', require('./routes/auth'));
+app.use('/nutrition', require('./routes/nutrition'));
 
 app.get('/', async (req, res) => {
     res.json({ping: 'pong'})
 })
 
-// app.get('/register', async (req, res) => {
-//     res.json('hello')
-// })
-
-// app.get('/auth/login', async (req, res) => {
-//     res.json('hello')
-// })
 
 /** Handle 404 errors -- this matches everything */
 // app.use(function (req, res, next) {
@@ -44,9 +38,5 @@ app.get('/', async (req, res) => {
   //   })
   // })
 
-  // app.get('register', (req, res) => {
-  //   res.json('hello')
-  // })
-  
 
 module.exports = app;

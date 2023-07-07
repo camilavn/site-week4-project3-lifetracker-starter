@@ -13,7 +13,7 @@ describe('User Model', function () {
   let testUser;
 
   before(async function () {
-    testUser = await User.register('testuser77', 'password77', 'test77@example.com');
+    testUser = await User.register('testuser77', 'password77', 'test77@example.com', 'firstnametest', 'lastnametest');
   });
 
   describe('login method', function () {
@@ -53,7 +53,7 @@ describe('User Model', function () {
 
   describe('register method', function () {
     it('should allow user to register successfully with proper credentials', async function () {
-      const registeredUser = await User.register('testuser77', 'password77', 'test77@example.com');
+      const registeredUser = await User.register('testuser77', 'password77', 'test77@example.com', 'firstnametest', 'lastnametest');
 
       assert.strictEqual(registeredUser.username, 'testuser77');
       assert.strictEqual(registeredUser.email, 'test77@example.com');
@@ -64,7 +64,7 @@ describe('User Model', function () {
       await chai.spy.on(User, 'register', () => Promise.reject(new Error('Email or username already taken')));
 
       try {
-        await User.register('testuser77', 'password77', 'test77@example.com');
+        await User.register('testuser77', 'password77', 'test77@example.com', 'firstnametest', 'lastnametest');
         assert.fail('Expected BadRequestError was not thrown');
       } catch (error) {
         expect(error.message).to.equal('Email or username already taken');
@@ -77,7 +77,7 @@ describe('User Model', function () {
       await chai.spy.on(User, 'register', () => Promise.reject(new Error('Email or username already taken')));
 
       try {
-        await User.register('testuser77', 'password77', 'test77@example.com');
+        await User.register('testuser77', 'password77', 'test77@example.com', 'firstnametest', 'lastnametest');
         assert.fail('Expected BadRequestError was not thrown');
       } catch (error) {
         expect(error.message).to.equal('Email or username already taken');
@@ -87,7 +87,7 @@ describe('User Model', function () {
         await chai.spy.on(User, 'register', () => Promise.reject(new Error('Invalid email')));
       
         try {
-          await User.register('testuser77', 'password77', 'invalidemail');
+          await User.register('testuser77', 'password77', 'invalidemail', 'firstnametest', 'lastnametest');
           assert.fail('Expected BadRequestError was not thrown');
         } catch (error) {
           expect(error.message).to.equal('Invalid email');

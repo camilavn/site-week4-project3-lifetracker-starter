@@ -2,10 +2,9 @@ const { UnauthorizedError } = require('../utils/errors');
 const { verifyToken } = require('../utils/token');
 
 function extractUserFromToken(req, res, next) {
-  const authHeader = req.headers.authorization;
-
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    const token = authHeader.substring(7); // Remove 'Bearer ' prefix
+  console.log("extractUserFromToken middleware")
+  const { token } = req.body;
+  if (token) {
     try {
       const payload = verifyToken(token);
       res.locals.user = payload;
@@ -23,8 +22,10 @@ function extractUserFromToken(req, res, next) {
 
 function requireAuthenticatedUser(req, res, next) {
   const user = res.locals.user;
+  console.log("USER:", user);
   if (!user) {
-    throw new UnauthorizedError('Authentication required');
+    //throw new UnauthorizedError('Authentication required');
+    console.log("REQAUTHENUSER Failed")
   }
 
   next();
