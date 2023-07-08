@@ -4,7 +4,6 @@ import axios from 'axios';
 import NotFound from '../NotFound/NotFound';
 import Home from '../Home/Home';
 import NutritionNew from './NutritionNew';
-import NutritionDetail from './NutritionDetail';
 import './NutritionPage.css';
 
 
@@ -53,7 +52,6 @@ export default function NutritionPage ({ appState }) {
   return (
     <div className="nutrition-page">
     <div className="nutrition-overview">
-      <Link to="/nutrition/create">Record Nutrition</Link>
       {nutritions.length === 0 ? (
         <div className="empty-message">Nothing here yet</div>
       ) : (
@@ -71,17 +69,13 @@ export default function NutritionPage ({ appState }) {
               )}
               <div className="nutrition-calories">{nutrition.calories}</div>
               <div className="nutrition-category">{nutrition.category}</div>
-              {/* <div className="nutrition-date">
-                {new Date(nutrition.createdAt).toLocaleDateString('en-GB')}
-              </div> */}
             </div>
           ))}
         </div>
       )}
     </div>
-
+    
     <NutritionNew />
-    {/* <NutritionDetail /> */}
  
   </div>
   );

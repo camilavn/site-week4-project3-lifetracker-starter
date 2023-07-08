@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import './ActivityPage.css';
 
 const Loading = () => <div>Loading...</div>;
 
@@ -8,7 +9,6 @@ const ActivityPage = ({ appState, setAppState }) => {
   const [summaryStats, setSummaryStats] = useState(null);
 
   useEffect(() => {
-    console.log('effect called')
     const fetchSummaryStats = async () => {
       setIsProcessing(true);
       
@@ -23,13 +23,9 @@ const ActivityPage = ({ appState, setAppState }) => {
         } else {
           alert('not authorized')
         }
-        console.log("RESPONSE FROM AP:", response.data);
   
-
         // Update the state with the fetched summary statistics
         setSummaryStats(response.data.nutrition.calories);
-        console.log("SUMMARY STATS:", summaryStats);
-
         setIsProcessing(false);
       } catch (error) {
         console.error('Error fetching summary statistics:', error);
@@ -44,33 +40,23 @@ const ActivityPage = ({ appState, setAppState }) => {
     <div className="activity-feed">
       <div className="per-category">
         <h4>Average Calories Per Category</h4>
-        {summaryStats?.perCategory.map(({ category, avgCaloriesPerCategory }) => (
-          <SummaryStat
-            key={category}
-            stat={avgCaloriesPerCategory.toFixed(1)}
-            label="calories"
-            substat={category}
-          />
-        ))}
+        {summaryStats && (
+          <SummaryStat label={summaryStats.perDay.date} stat={summaryStats.perCategory.avgcaloriespercategory} substat={summaryStats.perCategory.category} ></SummaryStat>
+        )}
       </div>
       <div className="per-day">
-        <h4>Total Calories Per Day</h4>
-        {summaryStats?.perDay.map(({ date, totalCaloriesPerDay }) => (
-          <SummaryStat
-            key={date}
-            stat={Math.floor(totalCaloriesPerDay)}
-            label="calories"
-            substat={new Date(date).toLocaleDateString('en-GB')}
-          />
-        ))}
+        <h4>Average Total Calories Per Day</h4>
+        {summaryStats && (
+          <SummaryStat label={summaryStats.perDay.date} stat={summaryStats.perDay.totalcaloriesperday} substat={summaryStats.perCategory.category} ></SummaryStat>
+        )}
       </div>
     </div>
   );
 
-  const SummaryStat = ({ stat, label, substat }) => (
+  const SummaryStat = ({ label, stat, substat }) => (
     <div className="summary-stat">
-      <div className="primary-statistic">{stat}</div>
       <div className="stat-label">{label}</div>
+      <div className="primary-statistic">{stat}</div>
       <div className="secondary-statistic">{substat}</div>
     </div>
   );
