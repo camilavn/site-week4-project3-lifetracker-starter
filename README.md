@@ -21,6 +21,10 @@ By the end of this project you will be able to...
 
 ## Application Features
 
+<div style="position: relative; padding-bottom: 55.46875%; height: 0;"><iframe src="https://www.loom.com/embed/c6dc17e59cf34524abee791582638a1f?sid=1f2e81c3-f438-404d-849d-c550bf8e88ba" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+
+https://www.loom.com/share/c6dc17e59cf34524abee791582638a1f?sid=1a936238-d1d9-4d6e-abbc-4c2f1d9f9b1e
+
 ### Core Features
 
 - [x] **The Landing Page:** Display a large hero image and a brief blurb on what this application is about. *Note:* This is the only page that unauthenticated users should be able to view.
